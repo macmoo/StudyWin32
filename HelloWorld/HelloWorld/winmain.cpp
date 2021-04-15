@@ -7,13 +7,17 @@ bool CreateMainWindow(HINSTANCE, int);
 LRESULT WINAPI WinProc(HWND, UINT, WPARAM, LPARAM);
 // ---------------------------------------------------------
 // 글로벌 변수
-HINSTANCE hinst;
+HINSTANCE	hinst;
+HDC			hdc;
+TCHAR		ch = ' ';
+RECT		rect;
+PAINTSTRUCT	ps;
 // ---------------------------------------------------------
 // 상수
 const char CLASS_NAME[]		= "WinMain";
 const char APP_TITLE[]		= "Hello World";
 const int  WINDOW_WIDTH		= 400;
-const int  WINDOW_HEIGHT	= 400;
+const int  WINDOW_HEIGHT	= 300;
 // ---------------------------------------------------------
 // 윈도우 APP의 시작점
 int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -35,21 +39,45 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			DispatchMessage(&msg);
 		}
 	}
+	// WinMain는 시스템으로 돌아갈때는 반환값을 WM_QUIT메시지의 wParam파라메터에 보관한다.
 	return msg.wParam;
 }
 // ---------------------------------------------------------
 // 윈도우 이벤트콜백함수
-LRESULT WINAPI WinProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+LRESULT WINAPI WinProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
-	case WM_DESTROY:
-		PostQuitMessage(0);
-		return 0;
+		case WM_DESTROY:
+			PostQuitMessage(0);
+			return 0;
+		case WM_CHAR:
+			// wParam에 눌려진 키의 문자코드가 들어있다,
+			switch (wParam) 
+			{
+				case 0x08:
+				case 0x09:
+				case 0x0A:
+				case 0x0D:
+				case 0x1B:
+					MessageBeep((UINT)-1);
+					return 0;
+				default:
+					ch = (TCHAR)wParam;
+					// WM_PAINT 강제발생시킴
+					InvalidateRect(hwnd, NULL, TRUE);
+			}
+		case WM_PAINT:
+			hdc = BeginPaint(hwnd, &ps);
+			GetClientRect(hwnd, &rect);
+			TextOut(hdc, rect.right/2, rect.bottom/2, &ch, 1);
+			EndPaint(hwnd, &ps);
+			return 0;
+		default:
+			return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
-	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
-// ---------------------------------------------------------
+// ---------------------------------- -----------------------
 // 윈도우 작성
 bool CreateMainWindow(HINSTANCE hInstance, int nCmdShow)
 {
