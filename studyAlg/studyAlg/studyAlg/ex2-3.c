@@ -30,6 +30,11 @@ int sumOf(const int a[], int n)
         sum += a[i];
     return sum;
 }
+// 평균
+float aveOf(const int a[], int n)
+{
+    return (float)sumOf(a, n) / n;
+}
 int main(void)
 {
     int i;
@@ -52,6 +57,7 @@ int main(void)
     printf("최대값은 :%d\n", maxOf(height, num));
     printf("최소값은 :%d\n", minOf(height, num));
     printf("합계는   :%d\n", sumOf(height, num));
+    printf("평균은   :%.3f\n", aveOf(height, num));
     free(height);
     return 0;
 }
