@@ -6,6 +6,6 @@
 int main(void)
 {
     register int nx;
-    printf("&nx의 값은 %p\n", &nx);
+    printf("&nx의 값은 %p\n", &nx); // ERROR
     return 0;
 }
