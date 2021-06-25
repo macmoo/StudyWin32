@@ -10,18 +10,11 @@ int main(void)
 {
     int  x[5] = { 11,22,33,44,55 };
     int  y[5];
-    int* z = 0;
 
     int cnt = sizeof(x) / sizeof(x[0]);
     arr_cpy(y, x, cnt);
 
     for (int i = 0; i < cnt; i++)
         printf("y[%d] = %d\n", i, y[i]);
-
-    arr_cpy(z, x, cnt);
-
-    for (int i = 0; i < cnt; i++)
-        printf("z[%d] = %d\n", i, z[i]);
-
     return 0;
 }
