@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+// 3차배열 출력
 int main(void)
 {
     int b[3][2][4] = {
