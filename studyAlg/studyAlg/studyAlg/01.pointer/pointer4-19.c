@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 // 문자열에서 문자 검색
 char* str_chr(const char* s, int c)
 {
